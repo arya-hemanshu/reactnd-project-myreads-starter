@@ -18,37 +18,37 @@ class BooksApp extends React.Component {
   }
 
   onSectionChange = (newSection, book) => {
-    const bookShelf = book.props.shelf
-    BooksAPI.update({id: book.props.id}, newSection)
+    const bookShelf = book.shelf
+    BooksAPI.update({id: book.id}, newSection)
       .then(res => {
         const newBook = (<Book 
-                          bookTitle={book.props.bookTitle} 
-                          authors={book.props.authors}
-                          id={book.props.id}
+                          bookTitle={book.bookTitle} 
+                          authors={book.authors}
+                          id={book.id}
                           shelf={newSection}
-                          url={book.props.url}
+                          url={book.url}
                           onSectionChange={this.onSectionChange}/>)
 
         if(bookShelf === 'none') {
           this.setState(prevState => ({
             [`${newSection}`] : [...prevState[`${newSection}`], newBook],
-            allBooks: {...prevState.allBooks, [`${book.props.id}`]: newSection}
+            allBooks: {...prevState.allBooks, [`${book.id}`]: newSection}
           }))
         } else {
           const previousSection = this.state[`${bookShelf}`]
           const previousSectionWithDeletedBook = 
-                            previousSection.filter(b => b.props.id !== book.props.id)
+                            previousSection.filter(b => b.props.id !== book.id)
 
           if (newSection === 'none') {
             let deleteBook = Object.assign({}, this.state.allBooks)
-            delete deleteBook[book.props.id]
+            delete deleteBook[book.id]
             this.setState(() => ({
               [`${bookShelf}`]: previousSectionWithDeletedBook.length > 0 ? previousSectionWithDeletedBook : [],
               allBooks: deleteBook
             }))
           } else {
             let changeShelf = Object.assign({}, this.state.allBooks)
-            changeShelf[book.props.id] = newSection
+            changeShelf[book.id] = newSection
             this.setState(prevState => ({
               [`${bookShelf}`]: previousSectionWithDeletedBook.length > 0 ? previousSectionWithDeletedBook : [],
               [`${newSection}`]: [...prevState[`${newSection}`], newBook],

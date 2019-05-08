@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {DebounceInput} from 'react-debounce-input';
 import {Link} from 'react-router-dom';
 import * as BooksApi from './BooksAPI';
 import Book from './Book';
@@ -7,13 +8,12 @@ class SearchBooks extends Component {
 
     state = {
         value: '',
-        books: {},
-        searching: true
+        books: {}
     }
 
     onSectionChange = (newSection, book) => {
         let newBook = Object.assign({}, this.state.books)
-        newBook[book.props.id].shelf = newSection
+        newBook[book.id].shelf = newSection
         this.setState({books: newBook})
 
         this.props.onSectionChange(newSection, book)
@@ -24,13 +24,12 @@ class SearchBooks extends Component {
         const tempBooks = {}
 
         this.setState(() => ({
-            value : searchTerm,
-            searching: true
+            value : searchTerm
         }))
         
         if (searchTerm !== '') {
             BooksApi.search(searchTerm)
-            .then(books => {
+            .then(books => {    
                 if (books !== undefined && books.length > 0) {
                     books.forEach(book => {
                         tempBooks[book.id] = {
@@ -43,13 +42,13 @@ class SearchBooks extends Component {
                           imageLinks: book.imageLinks
                         }
                     })
-                    if(this.state.searching) {
-                        this.setState({books: tempBooks})
-                    }   
-                } 
+                    this.setState({books: tempBooks})   
+                } else {
+                    this.setState({books: {}})
+                }
             })
         } else {
-            this.setState({books: {}, searching: false})
+            this.setState({books: {}})
         }  
     }
 
@@ -60,7 +59,9 @@ class SearchBooks extends Component {
                     <Link className="close-search" to='/'>Close</Link>
                     <div className="search-books-input-wrapper">
                         
-                        <input type="text" 
+                        <DebounceInput 
+                            debounceTimeout={1000}
+                            type="text" 
                             placeholder="Search by title or author"
                             value={this.state.value}
                             onChange={e => this.onChangeHandler(e.target.value)}/>

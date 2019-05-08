@@ -9,7 +9,7 @@ class BookMenuOptions extends Component {
     render() {
         return (
             <div className="book-shelf-changer">
-                <select value={this.props.selected} onChange={this.onChangeHandler}>
+                <select defaultValue={this.props.selected} onChange={this.onChangeHandler}>
                     <option value="move" disabled>Move to...</option>
                     <option value="currentlyReading">Currently Reading</option>
                     <option value="wantToRead" >Want to Read</option>
