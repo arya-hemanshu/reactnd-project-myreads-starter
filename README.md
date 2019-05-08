@@ -4,7 +4,7 @@ This is an app that allows you to categorize your books online into three differ
 
 ## How to get started
 
-- Clone the repository from [Github]('https://www.google.com') using ```git clone https://www.google.com```
+- Clone the repository from [Github]('https://github.com/arya-hemanshu/reactnd-project-myreads-starter.git') using ```git clone https://github.com/arya-hemanshu/reactnd-project-myreads-starter.git```
 
 - Navigate to project dir using ```cd```
 - In terminal window type ```npm install```
